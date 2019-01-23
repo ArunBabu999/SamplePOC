@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import example.com.samplepoc.R;
 import example.com.samplepoc.model.FactsModel;
 
@@ -46,14 +48,16 @@ public class FactsRecyclerviewAdpater extends RecyclerView.Adapter<FactsRecycler
 
     class FactsViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.imageView)
         ImageView imageView;
-        TextView title, description;
+        @BindView(R.id.title)
+        TextView title;
+        @BindView(R.id.description)
+        TextView description;
 
         public FactsViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
-            title = itemView.findViewById(R.id.title);
-            description = itemView.findViewById(R.id.description);
+            ButterKnife.bind(this, itemView);
         }
 
 

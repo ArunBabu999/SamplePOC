@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import example.com.samplepoc.MyApplication;
 import example.com.samplepoc.R;
 import example.com.samplepoc.model.FactsModel;
@@ -26,32 +29,56 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
+    @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.swipeToRefresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     FactsRecyclerviewAdpater mAdapter;
-    @Inject Retrofit mRetrofit;
+    @Inject
+    Retrofit mRetrofit;
+    FactsAPIService lFactAPI;
+    FactsViewModel factViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        recyclerView = findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         setSupportActionBar(toolbar);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ((MyApplication) getApplication()).getNetComponent().inject(this);
+        lFactAPI = mRetrofit.create(FactsAPIService.class);
 
-        FactsAPIService lFactAPI = mRetrofit.create(FactsAPIService.class);
+        //View Model Logic
+        factViewModel = ViewModelProviders.of(this).get(FactsViewModel.class);
+        getFactsDataFromAPI(factViewModel, lFactAPI);
 
-        FactsViewModel factViewModel = ViewModelProviders.of(this).get(FactsViewModel.class);
+
+        //PullTo Refresh Logic here
+        //mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+       // mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.blue);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.setRefreshing(true);
+                getFactsDataFromAPI(factViewModel, lFactAPI);
+            }
+        });
+    }
+
+    private void getFactsDataFromAPI(FactsViewModel factViewModel, FactsAPIService lFactAPI) {
         factViewModel.getFacts(lFactAPI).observe(this, new Observer<FactsResponse>() {
             @Override
             public void onChanged(@Nullable FactsResponse factsResponse) {
                 getSupportActionBar().setTitle(factsResponse.getTitle());
                 mAdapter = new FactsRecyclerviewAdpater(MainActivity.this, factsResponse.getRows());
                 recyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-
     }
 
     @Override
@@ -72,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
