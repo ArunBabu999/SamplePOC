@@ -38,7 +38,7 @@ public class FactsViewModel extends ViewModel {
             @Override
             public void onResponse(Call<FactsResponse> call, Response<FactsResponse> response) {
                 if (response != null) {
-                    Log.d("ARUN","RESPONSE:"+ new Gson().toJson(response));
+                    Log.d("ARUN", "RESPONSE:" + new Gson().toJson(response));
                     FactsResponse factResponse = response.body();
                     mFactsList.setValue(factResponse.getRows());
                 }

@@ -2,15 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/factsrow_margin"
     android:orientation="vertical">
-
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
+        android:textColor="@color/blue"
         android:layout_height="wrap_content"
-        android:text="ARUN BABU"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
     <LinearLayout
@@ -24,16 +23,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
-            android:text="Text Visual"
-            android:textColor="#000000" />
+            android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
-            android:layout_weight="0.4"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_background" />
+            android:layout_weight="0.4"/>
     </LinearLayout>
-
-
 </LinearLayout>

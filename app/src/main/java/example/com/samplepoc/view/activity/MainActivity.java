@@ -1,4 +1,4 @@
-package example.com.samplepoc;
+package example.com.samplepoc.view.activity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -15,6 +15,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import example.com.samplepoc.MyApplication;
+import example.com.samplepoc.R;
 import example.com.samplepoc.model.FactsModel;
 import example.com.samplepoc.network.FactsAPIService;
 import example.com.samplepoc.view.adapter.FactsRecyclerviewAdpater;
@@ -25,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     FactsRecyclerviewAdpater mAdapter;
-    @Inject
-    Retrofit mRetrofit;
+    @Inject Retrofit mRetrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         FactsAPIService lFactAPI = mRetrofit.create(FactsAPIService.class);
 
         FactsViewModel factViewModel = ViewModelProviders.of(this).get(FactsViewModel.class);
-
         factViewModel.getFacts(lFactAPI).observe(this, new Observer<List<FactsModel>>() {
             @Override
             public void onChanged(@Nullable List<FactsModel> factsModels) {
