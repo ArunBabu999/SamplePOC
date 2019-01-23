@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import example.com.samplepoc.MyApplication;
 import example.com.samplepoc.R;
 import example.com.samplepoc.model.FactsModel;
+import example.com.samplepoc.model.FactsResponse;
 import example.com.samplepoc.network.FactsAPIService;
 import example.com.samplepoc.view.adapter.FactsRecyclerviewAdpater;
 import example.com.samplepoc.viewmodel.FactsViewModel;
@@ -42,13 +43,15 @@ public class MainActivity extends AppCompatActivity {
         FactsAPIService lFactAPI = mRetrofit.create(FactsAPIService.class);
 
         FactsViewModel factViewModel = ViewModelProviders.of(this).get(FactsViewModel.class);
-        factViewModel.getFacts(lFactAPI).observe(this, new Observer<List<FactsModel>>() {
+        factViewModel.getFacts(lFactAPI).observe(this, new Observer<FactsResponse>() {
             @Override
-            public void onChanged(@Nullable List<FactsModel> factsModels) {
-                mAdapter = new FactsRecyclerviewAdpater(MainActivity.this, factsModels);
+            public void onChanged(@Nullable FactsResponse factsResponse) {
+                getSupportActionBar().setTitle(factsResponse.getTitle());
+                mAdapter = new FactsRecyclerviewAdpater(MainActivity.this, factsResponse.getRows());
                 recyclerView.setAdapter(mAdapter);
             }
         });
+
     }
 
     @Override

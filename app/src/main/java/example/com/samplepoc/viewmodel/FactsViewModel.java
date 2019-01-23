@@ -22,14 +22,14 @@ import retrofit2.Retrofit;
 public class FactsViewModel extends ViewModel {
 
     //this is the data that we will fetch asynchronously
-    private MutableLiveData<List<FactsModel>> mFactsList;
+    private MutableLiveData<FactsResponse> mFactsResponse;
 
-    public LiveData<List<FactsModel>> getFacts(FactsAPIService apiService) {
-        if (mFactsList == null) {
-            mFactsList = new MutableLiveData<List<FactsModel>>();
+    public LiveData<FactsResponse> getFacts(FactsAPIService apiService) {
+        if (mFactsResponse == null) {
+            mFactsResponse = new MutableLiveData<FactsResponse>();
             fetchFactsList(apiService);
         }
-        return mFactsList;
+        return mFactsResponse;
     }
 
     private void fetchFactsList(FactsAPIService apiService) {
@@ -40,7 +40,7 @@ public class FactsViewModel extends ViewModel {
                 if (response != null) {
                     Log.d("ARUN", "RESPONSE:" + new Gson().toJson(response));
                     FactsResponse factResponse = response.body();
-                    mFactsList.setValue(factResponse.getRows());
+                    mFactsResponse.setValue(factResponse);
                 }
             }
 
