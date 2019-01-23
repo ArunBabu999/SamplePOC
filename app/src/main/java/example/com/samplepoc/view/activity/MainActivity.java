@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ import example.com.samplepoc.R;
 import example.com.samplepoc.model.FactsModel;
 import example.com.samplepoc.model.FactsResponse;
 import example.com.samplepoc.network.FactsAPIService;
+import example.com.samplepoc.utils.NetworkUtils;
 import example.com.samplepoc.view.adapter.FactsRecyclerviewAdpater;
 import example.com.samplepoc.viewmodel.FactsViewModel;
 import retrofit2.Retrofit;
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @BindView(R.id.swipeToRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.cLayout)
+    CoordinatorLayout coordinatorLayout;
 
     FactsRecyclerviewAdpater mAdapter;
     @Inject
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         //PullTo Refresh Logic here
         //mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-       // mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.blue);
+        // mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.blue);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -69,16 +74,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getFactsDataFromAPI(FactsViewModel factViewModel, FactsAPIService lFactAPI) {
-        factViewModel.getFacts(lFactAPI).observe(this, new Observer<FactsResponse>() {
-            @Override
-            public void onChanged(@Nullable FactsResponse factsResponse) {
-                getSupportActionBar().setTitle(factsResponse.getTitle());
-                mAdapter = new FactsRecyclerviewAdpater(MainActivity.this, factsResponse.getRows());
-                recyclerView.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            factViewModel.getFacts(lFactAPI).observe(this, new Observer<FactsResponse>() {
+                @Override
+                public void onChanged(@Nullable FactsResponse factsResponse) {
+                    getSupportActionBar().setTitle(factsResponse.getTitle());
+                    mAdapter = new FactsRecyclerviewAdpater(MainActivity.this, factsResponse.getRows());
+                    recyclerView.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        }else{
+            Snackbar snackbar= Snackbar.make((coordinatorLayout),getResources().getString(R.string.network_warn), Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
     }
 
     @Override
