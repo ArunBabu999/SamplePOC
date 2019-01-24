@@ -37,6 +37,12 @@ List of files included :
 7. ApiModule.java and AppModule.java, ApiComponent.java are the classes to do dependency injection.
 8. NetworkUtils.java to check the network connection.
 
+Testing :
+1. Unit test case to test ViewModel written in FactsViewModelTest.java.
+
+Limitations :
+
+1.Limited number of test cases are written. It can be increased.
 
 This poc is implemented by ARUN BABU PATHAKOTA, if any questions please contact me.
 
