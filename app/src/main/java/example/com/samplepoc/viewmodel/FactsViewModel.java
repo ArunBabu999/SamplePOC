@@ -24,7 +24,7 @@ import retrofit2.Retrofit;
 public class FactsViewModel extends ViewModel {
 
     //this is the data that we will fetch asynchronously
-    private MutableLiveData<FactsResponse> mFactsResponse;
+    public MutableLiveData<FactsResponse> mFactsResponse;
 
     public LiveData<FactsResponse> getFacts(FactsAPIService apiService) {
         if (mFactsResponse == null) {
