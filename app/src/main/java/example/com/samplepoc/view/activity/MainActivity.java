@@ -56,14 +56,12 @@ public class MainActivity extends AppCompatActivity {
         ((MyApplication) getApplication()).getNetComponent().inject(this);
         lFactAPI = mRetrofit.create(FactsAPIService.class);
 
-        //View Model Logic
+        //ViewModel Logic
         factViewModel = ViewModelProviders.of(this).get(FactsViewModel.class);
         getFactsDataFromAPI(factViewModel, lFactAPI);
 
 
         //PullTo Refresh Logic here
-        //mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        // mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.blue);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
