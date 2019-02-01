@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         //ViewModel Logic
         factViewModel = ViewModelProviders.of(this).get(FactsViewModel.class);
-        getFactsDataFromAPI(factViewModel, lFactAPI);
-
 
         //PullTo Refresh Logic here
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -71,22 +69,38 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getFactsDataFromAPI(FactsViewModel factViewModel, FactsAPIService lFactAPI) {
-        if (NetworkUtils.isNetworkAvailable(this)) {
-            factViewModel.getFacts(lFactAPI).observe(this, new Observer<FactsResponse>() {
-                @Override
-                public void onChanged(@Nullable FactsResponse factsResponse) {
-                    getSupportActionBar().setTitle(factsResponse.getTitle());
-                    mAdapter = new FactsRecyclerviewAdpater(MainActivity.this, factsResponse.getRows());
-                    recyclerView.setAdapter(mAdapter);
-                    mAdapter.notifyDataSetChanged();
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-            });
-        }else{
-            Snackbar snackbar= Snackbar.make((coordinatorLayout),getResources().getString(R.string.network_warn), Snackbar.LENGTH_LONG);
-            snackbar.show();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (factViewModel.getFacts(lFactAPI).getValue() == null && !NetworkUtils.isNetworkAvailable(getApplicationContext())) {
+            showNetworkError();
+        } else {
+            getFactsDataFromAPI(factViewModel, lFactAPI);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    private void getFactsDataFromAPI(FactsViewModel factViewModel, FactsAPIService lFactAPI) {
+
+        factViewModel.getFacts(lFactAPI).observe(this, new Observer<FactsResponse>() {
+            @Override
+            public void onChanged(@Nullable FactsResponse factsResponse) {
+                getSupportActionBar().setTitle(factsResponse.getTitle());
+                mAdapter = new FactsRecyclerviewAdpater(MainActivity.this, factsResponse.getRows());
+                recyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private void showNetworkError() {
+        Snackbar snackbar = Snackbar.make((coordinatorLayout), getResources().getString(R.string.network_warn), Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     @Override

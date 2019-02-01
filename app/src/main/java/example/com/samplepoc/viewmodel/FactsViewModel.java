@@ -1,5 +1,6 @@
 package example.com.samplepoc.viewmodel;
 
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -21,6 +22,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static android.support.constraint.Constraints.TAG;
+
 public class FactsViewModel extends ViewModel {
 
     //this is the data that we will fetch asynchronously
@@ -40,7 +43,7 @@ public class FactsViewModel extends ViewModel {
             @Override
             public void onResponse(Call<FactsResponse> call, Response<FactsResponse> response) {
                 if (response != null) {
-                    Log.d("ARUN", "RESPONSE:" + new Gson().toJson(response));
+                    Log.d(TAG, "Facts Response:" + new Gson().toJson(response));
                     FactsResponse factResponse = response.body();
                     mFactsResponse.setValue(factResponse);
                 }
