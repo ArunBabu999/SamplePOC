@@ -1,26 +1,17 @@
 package example.com.samplepoc.viewmodel;
 
-import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import example.com.samplepoc.model.FactsModel;
 import example.com.samplepoc.model.FactsResponse;
 import example.com.samplepoc.network.FactsAPIService;
-import example.com.samplepoc.utils.NetworkUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 import static android.support.constraint.Constraints.TAG;
 

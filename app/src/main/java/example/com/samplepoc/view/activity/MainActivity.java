@@ -14,15 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.samplepoc.MyApplication;
 import example.com.samplepoc.R;
-import example.com.samplepoc.model.FactsModel;
 import example.com.samplepoc.model.FactsResponse;
 import example.com.samplepoc.network.FactsAPIService;
 import example.com.samplepoc.utils.NetworkUtils;
