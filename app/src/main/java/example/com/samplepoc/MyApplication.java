@@ -5,7 +5,7 @@ import android.app.Application;
 import example.com.samplepoc.constant.Constants;
 
 
-public class MyApplication extends Application{
+public class MyApplication extends Application {
     private example.com.samplepoc.ApiComponent mApiComponent;
 
     @Override
