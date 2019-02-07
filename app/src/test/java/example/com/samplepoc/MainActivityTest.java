@@ -18,25 +18,24 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MainActivityTest {
-    @Mock
-    RecyclerView mRecyclerView;
-    @Mock
-    FactsRecyclerviewAdpater mAdapter;
-    @Mock
-    public LinearLayoutManager mLayoutManager;
-    @Mock
-    Activity mActivity;
+  @Mock
+  RecyclerView mRecyclerView;
+  @Mock
+  FactsRecyclerviewAdpater mAdapter;
+  @Mock
+  public LinearLayoutManager mLayoutManager;
+  @Mock
+  Activity mActivity;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        when(mRecyclerView.getLayoutManager()).thenReturn(mLayoutManager);
-        when(mRecyclerView.getContext()).thenReturn(mActivity);
-    }
+  @Before
+  public void setup() {
+    MockitoAnnotations.initMocks(this);
+    when(mRecyclerView.getLayoutManager()).thenReturn(mLayoutManager);
+    when(mRecyclerView.getContext()).thenReturn(mActivity);
+  }
 
-    @Test
-    public void testSetAdapter() {
-        verify(mRecyclerView).setAdapter(mAdapter);
-    }
-
+  @Test
+  public void testSetAdapter() {
+    verify(mRecyclerView).setAdapter(mAdapter);
+  }
 }

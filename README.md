@@ -24,6 +24,8 @@ Design & third party libraries used:
 6. Dagger2 is used for dependency Injection.
 7. GSON library for parsing JSON Response.
 8. LiveData is used in this project.
+9. Shared Preference and Gson is used to implement offline caching mechanism.
+10.SquareAndroid is used for code-styling.
 
 
 List of files included :

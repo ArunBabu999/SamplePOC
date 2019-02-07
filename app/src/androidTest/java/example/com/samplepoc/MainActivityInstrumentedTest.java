@@ -27,19 +27,19 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityInstrumentedTest {
-    @Test
-    public void useAppContext() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        assertEquals("example.com.samplepoc", appContext.getPackageName());
-    }
+  @Test
+  public void useAppContext() {
+    // Context of the app under test.
+    Context appContext = InstrumentationRegistry.getTargetContext();
+    assertEquals("example.com.samplepoc", appContext.getPackageName());
+  }
 
-    @Test
-    public void testSucessScenario(){
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
+  @Test
+  public void testSucessScenario() {
+    onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
+  }
 
-    @Test
-    public void testErrorScenario(){
-    }
+  @Test
+  public void testErrorScenario() {
+  }
 }

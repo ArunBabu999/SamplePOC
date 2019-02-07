@@ -3,32 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/factsrow_margin"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
+
+  <TextView
+      android:id="@+id/title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+      android:textColor="@color/blue"
+      />
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="horizontal"
+      >
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:textColor="@color/blue"
+        android:id="@+id/description"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+        android:layout_weight="0.6"
+        android:textColor="@color/black"
+        />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:textColor="@color/black" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.4"/>
-    </LinearLayout>
+        android:layout_weight="0.4"
+        />
+  </LinearLayout>
 </LinearLayout>

@@ -9,15 +9,15 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
-    private Application mApplication;
+  private Application mApplication;
 
-    AppModule(Application mApplication) {
-        this.mApplication = mApplication;
-    }
+  AppModule(Application mApplication) {
+    this.mApplication = mApplication;
+  }
 
-    @Provides
-    @Singleton
-    Application provideApplication() {
-        return mApplication;
-    }
+  @Provides
+  @Singleton
+  Application provideApplication() {
+    return mApplication;
+  }
 }

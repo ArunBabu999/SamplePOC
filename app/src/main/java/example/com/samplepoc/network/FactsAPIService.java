@@ -6,7 +6,6 @@ import retrofit2.http.GET;
 
 public interface FactsAPIService {
 
-    @GET("s/2iodh4vg0eortkl/facts.json")
-    Call<FactsResponse> getFacts();
-
+  @GET("s/2iodh4vg0eortkl/facts.json")
+  Call<FactsResponse> getFacts();
 }

@@ -5,8 +5,10 @@ import android.net.ConnectivityManager;
 
 public class NetworkUtils {
 
-    public static boolean isNetworkAvailable(Context context) {
-        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
-        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
-    }
+  public static boolean isNetworkAvailable(Context context) {
+    final ConnectivityManager connectivityManager =
+        ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+    return connectivityManager.getActiveNetworkInfo() != null
+        && connectivityManager.getActiveNetworkInfo().isConnected();
+  }
 }

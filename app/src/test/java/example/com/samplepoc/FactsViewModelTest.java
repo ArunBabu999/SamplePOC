@@ -16,22 +16,20 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FactsViewModelTest {
-    FactsViewModel viewModel;
-    @Mock
-    FactsAPIService apiService;
-    @Mock
-   MutableLiveData<FactsResponse> factsResponse;
+  FactsViewModel viewModel;
+  @Mock
+  FactsAPIService apiService;
+  @Mock
+  MutableLiveData<FactsResponse> factsResponse;
 
-    @Before
-    public void setup() {
-        viewModel = new FactsViewModel();
-        viewModel.mFactsResponse = factsResponse;
-    }
+  @Before
+  public void setup() {
+    viewModel = new FactsViewModel();
+    viewModel.mFactsResponse = factsResponse;
+  }
 
-    @Test
-    public void testGetFacts() {
-        assertEquals(viewModel.getFacts(apiService), factsResponse);
-    }
-
-
+  @Test
+  public void testGetFacts() {
+    assertEquals(viewModel.getFacts(apiService), factsResponse);
+  }
 }
