@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import example.com.samplepoc.model.FactsResponse;
 import example.com.samplepoc.network.FactsAPIService;
+import example.com.samplepoc.utils.NetworkUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

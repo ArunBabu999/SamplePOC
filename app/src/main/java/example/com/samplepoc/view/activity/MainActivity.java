@@ -2,7 +2,10 @@ package example.com.samplepoc.view.activity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SharedMemory;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -14,12 +17,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.gson.Gson;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.samplepoc.MyApplication;
 import example.com.samplepoc.R;
+import example.com.samplepoc.constant.Constants;
 import example.com.samplepoc.model.FactsResponse;
 import example.com.samplepoc.network.FactsAPIService;
 import example.com.samplepoc.utils.NetworkUtils;
@@ -41,11 +47,14 @@ public class MainActivity extends AppCompatActivity {
     Retrofit mRetrofit;
     FactsAPIService lFactAPI;
     FactsViewModel factViewModel;
+    SharedPreferences mSharedPreference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mSharedPreference = getPreferences(MODE_PRIVATE);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,11 +78,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (factViewModel.getFacts(lFactAPI).getValue() == null && !NetworkUtils.isNetworkAvailable(getApplicationContext())) {
-            showNetworkError();
-        } else {
-            getFactsDataFromAPI(factViewModel, lFactAPI);
-        }
+        requestFactsData();
     }
 
     @Override
@@ -81,23 +86,53 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    private void getFactsDataFromAPI(FactsViewModel factViewModel, FactsAPIService lFactAPI) {
+    private void requestFactsData() {
+        if (factViewModel.getFacts(lFactAPI).getValue() == null && !NetworkUtils.isNetworkAvailable(getApplicationContext())) {
+            getDataFromCache();
+        } else {
+            getFactsDataFromAPI(factViewModel, lFactAPI);
+        }
+    }
 
+    private void getFactsDataFromAPI(FactsViewModel factViewModel, FactsAPIService lFactAPI) {
+        checkNetworkConnection();
         factViewModel.getFacts(lFactAPI).observe(this, new Observer<FactsResponse>() {
             @Override
             public void onChanged(@Nullable FactsResponse factsResponse) {
-                getSupportActionBar().setTitle(factsResponse.getTitle());
-                mAdapter = new FactsRecyclerviewAdpater(MainActivity.this, factsResponse.getRows());
-                recyclerView.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
-                mSwipeRefreshLayout.setRefreshing(false);
+                setFactsResponseToView(factsResponse);
             }
         });
     }
 
-    private void showNetworkError() {
-        Snackbar snackbar = Snackbar.make((coordinatorLayout), getResources().getString(R.string.network_warn), Snackbar.LENGTH_LONG);
-        snackbar.show();
+    private void checkNetworkConnection() {
+        if (mSwipeRefreshLayout.isRefreshing() && !NetworkUtils.isNetworkAvailable(getApplicationContext())) {
+            mSwipeRefreshLayout.setRefreshing(false);
+            Snackbar snackbar = Snackbar.make((coordinatorLayout), getResources().getString(R.string.network_warn), Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }
+    }
+
+    private void setFactsResponseToView(FactsResponse factsResponse) {
+        getSupportActionBar().setTitle(factsResponse.getTitle());
+        saveToSharedPreference(factsResponse);
+        mAdapter = new FactsRecyclerviewAdpater(MainActivity.this, factsResponse.getRows());
+        recyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private FactsResponse getCachedDataFromPreference() {
+        Gson gson = new Gson();
+        String json = mSharedPreference.getString(Constants.PREFERENCE_KEY, null);
+        FactsResponse factsResponse = gson.fromJson(json, FactsResponse.class);
+        return factsResponse;
+    }
+
+
+    private void getDataFromCache() {
+        if (getCachedDataFromPreference() != null) {
+            setFactsResponseToView(getCachedDataFromPreference());
+        }
     }
 
     @Override
@@ -105,6 +140,14 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    private void saveToSharedPreference(FactsResponse factsResponse) {
+        SharedPreferences.Editor prefsEditor = mSharedPreference.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(factsResponse);
+        prefsEditor.putString(Constants.PREFERENCE_KEY, json);
+        prefsEditor.commit();
     }
 
     @Override
