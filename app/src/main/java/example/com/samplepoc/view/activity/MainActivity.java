@@ -4,8 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.SharedMemory;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -16,13 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.google.gson.Gson;
-
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.google.gson.Gson;
 import example.com.samplepoc.MyApplication;
 import example.com.samplepoc.R;
 import example.com.samplepoc.constant.Constants;
@@ -31,6 +25,7 @@ import example.com.samplepoc.network.FactsAPIService;
 import example.com.samplepoc.utils.NetworkUtils;
 import example.com.samplepoc.view.adapter.FactsRecyclerviewAdpater;
 import example.com.samplepoc.viewmodel.FactsViewModel;
+import javax.inject.Inject;
 import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {

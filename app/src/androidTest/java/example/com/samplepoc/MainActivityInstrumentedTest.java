@@ -2,23 +2,16 @@ package example.com.samplepoc;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v7.widget.RecyclerView;
-
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import example.com.samplepoc.model.FactsResponse;
-import example.com.samplepoc.viewmodel.FactsViewModel;
-
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -35,11 +28,12 @@ public class MainActivityInstrumentedTest {
   }
 
   @Test
-  public void testSucessScenario() {
+  public void testSuccessScenario() {
     onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
   }
 
   @Test
   public void testErrorScenario() {
+    onView(withId(R.id.recyclerview)).perform(click()).check(matches(isDisplayed()));
   }
 }
